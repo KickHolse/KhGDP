@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────── #
+#                    ██ ▄█▀  ██████                   #
+#                    ██▄█▒ ▒██    ▒                   #
+#                   ▓███▄░ ░ ▓██▄                     #
+#                   ▓██ █▄   ▒   ██▒                  #
+#                   ▒██▒ █▄▒██████▒▒                  #
+#                   ▒ ▒▒ ▓▒▒ ▒▓▒ ▒ ░                  #
+#                   ░ ░▒ ▒░░ ░▒  ░ ░                  #
+#                   ░ ░░ ░ ░  ░  ░                    #
+#                   ░  ░         ░                    #
+# ─────────────────────────────────────────────────── #
+options:
+#	Nome: KhGDP | Autor: Kick Holse
+	version: 1.6
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── #
+# events
+on sign change:
+	if player has permission "khgdp.admin" or "khgdp.*":
+		line 1 is "[gdp]" or "[genio]":
+			set line 1 to colored {khgdp::sign1}
+			set line 2 to colored {khgdp::sign2}
+			set line 3 to colored {khgdp::sign3}
+			set line 4 to colored {khgdp::sign4}
+on right click:
+	if line 1 of clicked block is colored {khgdp::sign1}:
+		if line 2 of clicked block is colored {khgdp::sign2}:
+			if line 3 of clicked block is colored {khgdp::sign3}:
+				if line 4 of clicked block is colored {khgdp::sign4}:
+					replace all "\n" with newline in {khgdp::clicksign}
+					give player sign named colored {khgdp::itemname}
+					send colored {khgdp::clicksign} to player
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── #
+# commands
+command /khgdp [<text = help>]:
+	permission: khgdp.*
+	permission message: §3[KhGDP] §7v{@version} §f- §7Criado por §6Kick Holse§7.
+	trigger:
+		arg 1 == "help":
+			give player sign named khcore_getName(yaml value "messages.hotbar.genius.icon" from "khgdp.language") with lore khcore_getLore(yaml value "messages.hotbar.genius.icon" from "khgdp.language")
+		arg 1 == "atualizar":
+			khcore_update(player, "%{khgdp::check_update}%", "KhGDP", script)
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── #
+# file manager
+function khgdp_filemanager(use: text):
+	{_use} == "create":
+		khcore_downGithub("KhGDP/language.yml", "https://raw.githubusercontent.com/KickHolse/KhGDP/master/files/language")
+		loop currently loaded yaml files:
+			loop-value contains "khgdp.language"
+			unload yaml loop-value
+		load yaml "plugins/KhGDP/language.yml" as "khgdp.language"
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── #
+# load
+load:
+	khgdp_filemanager("create")
+	wait 1 second
+	text from "https://api.spigotmc.org/legacy/update.php?resource=68527" != "{@version}":
+		set {khgdp::check_update} to "true"
+		send "&3[KHGDP] &cYou are not using the latest version of skript" to console
+	else:
+		send "&3[KHGDP] &aYou are using the latest version of skript" to console
+	send "&3[KHGDP] &aKhGDP &8v{@version} &aenabled!" to console
