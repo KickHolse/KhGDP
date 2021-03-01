@@ -2,15 +2,14 @@
 # Discord: https://www.kskripts.tk/discord
 
 messages:
+  victim: '\n &aOlá, eu sou o Gênio da placa, faça um pedido escrevendo na placa que esta em seu inventário.\n '
   hotbar:
     genius:
       icon: 'nome>&aGênio da Placa : desc>&7Coloque a placa no chão e\n&7escreva [gdp]'
     players:
       icon: 'nome>&aResponda o Gênio : desc>&7Faça seu pedido por esta placa!'
-  click-sign: '\n&6[Genio da Placa] &aAlguem esta brincando de genio da placa com
-    voce, responda-o com esta placa que lhe demos.\n '
   sign:
     line-1: '&b-----------------'
-    line-2: '&a Genio da Placa'
+    line-2: '&aGênio da Placa'
     line-3: '&8(Faça um pedido)'
     line-4: '&b-----------------'
