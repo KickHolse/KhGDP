@@ -15,21 +15,19 @@ options:
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── #
 # events
-on sign change:
-	if player has permission "khgdp.admin" or "khgdp.*":
-		line 1 is "[gdp]" or "[genio]":
-			set line 1 to colored {khgdp::sign1}
-			set line 2 to colored {khgdp::sign2}
-			set line 3 to colored {khgdp::sign3}
-			set line 4 to colored {khgdp::sign4}
-on right click:
-	if line 1 of clicked block is colored {khgdp::sign1}:
-		if line 2 of clicked block is colored {khgdp::sign2}:
-			if line 3 of clicked block is colored {khgdp::sign3}:
-				if line 4 of clicked block is colored {khgdp::sign4}:
-					replace all "\n" with newline in {khgdp::clicksign}
-					give player sign named colored {khgdp::itemname}
-					send colored {khgdp::clicksign} to player
+join:
+	khcore_notifyUpdate(player, "KhGDP", "khgdp", "68527", "{@version}", "khgdp atualizar")
+sign change:
+	player has permission "khgdp.*":
+		line 1 is "[khgdp]" or "[gdp]"
+		loop 1 and 2 and 3 and 4:
+			set line loop-value to yaml value "messages.sign.line-%loop-value%" from "khgdp.language"
+rightclick:
+	loop 1 and 2 and 3 and 4:
+		line loop-value of clicked block is not yaml value "messages.sign.line-%loop-value%" from "khgdp.language"
+		stop
+	give player sign named khcore_getName(yaml value "messages.hotbar.players.icon" from "khgdp.language") with lore khcore_getLore(yaml value "messages.hotbar.players.icon" from "khgdp.language")
+	send replacer "\n" with newline in khcore_getText(player, yaml value "messages.victim" from "khgdp.language")
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── #
 # commands
